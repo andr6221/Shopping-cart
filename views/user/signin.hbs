@@ -3,7 +3,6 @@
         <h1>Sign In</h1>
         {{#if hasErrors}}
             <div class="alert alert-danger">
-                ,aasdas
                 {{# each messages }}
                     <p>{{this}}</p>
                 {{/each}}
@@ -21,6 +20,7 @@
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             <button type="submit" class="btn btn-primary">Sign In</button>
         </form>
+        <p>Er du ikke bruger endnu? <a href="/user/signup">Tilmeld dig her!</a></p>
     </div>
 </div>
 
