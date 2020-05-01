@@ -34,6 +34,15 @@ router.get('/about', function (req, res, next) {
     res.render('user/about')
 });
 
+router.get('/admin', function (req, res, next) {
+    res.render('user/admin')
+});
+
+router.post('/user/admin', function (req,res,next) {
+    userList = db.users.find();
+    return userList;
+});
+
 router.use('/', notLoggedIn, function(req, res, next){
     next();
 });
