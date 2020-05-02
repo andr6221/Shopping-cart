@@ -25,11 +25,20 @@ require('./config/passport');
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
+// Vi sætter al vores middleware op med konfigurationer
+
+
 app.use(logger('dev'));
+//Vi bruger express json, som er et indbygget middleware, der
 app.use(express.json());
+//Express urlencoded er et middleware som
+
 app.use(express.urlencoded({ extended: false }));
+//Validator bruges som middleware til at validere når folk signer op. F.eks. holder den styr at deres email er rigtig og hvor langt passworded skal være.
 app.use(validator());
+//Node.js kommer med et low-level HTTP setup, her vil node.js sørge for håndteringen af cookies.
 app.use(cookieParser());
+//Vi "aktiverer" pakken sessions og laver nogle konfigurationer. Sessions gør at der bliver gemt en cookie (med krypteret signartur) på klient siden, vores server kan afhente de rigtige informationer
 app.use(session({
   secret: 'mysupersecret',
   resave: false,

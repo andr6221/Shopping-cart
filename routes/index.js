@@ -1,4 +1,6 @@
 //Vi bruger nodes require funktion til at kunne bruge express
+
+
 var express = require('express');
 
 //Vi laver en variabel router på baggrund express route håndteringsmodul. Dette middleware gør at vi let kan lave nye routes.
@@ -13,50 +15,16 @@ var Product = require('../models/product');
 //Vi henter vores order model
 var Order = require('../models/order');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  //Hvis vi har en succes message (når vi gennemført et køb, vil den blive vist, ved hjælp af vores flash storage
-  var successMsg = req.flash('success')[0];
+var productViewController = require('../controller/productViewController');
+var cartController = require('../controller/cartController');
 
-  //Vi laver en call-back, der enten finder vores dokumenter (produkter) eller en fejl
-  Product.find(function (err, docs) {
-    //Laver en variabel productChunks som en tom array. Dette skal vi bruge til at styre hvor mange products vi skal have vist på vores produkt side.
-    var productChunks = [];
-    //Vi fortæller at der skal være maks 3 produkter per række
-    var chunkSize = 3;
-    //Vi laver et for-loop, der sørger for at loope igennem vores produkter op til vores chunksize (3)
-    for (var i = 0; i < docs.length; i+= chunkSize) {
-      //Herefter laver vi et nyt array, hvor vi pusher en ny række ind.
-      productChunks.push(docs.slice(i, i + chunkSize));
-    }
-    // Vi render vores index view, med Vores products og succes og fejl meddelser
-    res.render('shop/index', {title: 'Shopping Cart', products: productChunks, successMsg: successMsg, noMessages: !successMsg});
-  });
-});
+/* GET home page. */
+router.get('/', productViewController.productSite);
 
 //Vi laver vores add-to-cart route
-router.get('/add-to-cart/:id', function (req,res,next) {
-  var productId = req.params.id;
-  //Vi laver en ny kurv, hver gang vi tilføjer et item.
-  //Vi gøre dette ved gennem adgang til vores session. Hvis vi allerede har en kurv tilføjer vi den ellers bruger vi et tomt objekt.
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
+router.get('/add-to-cart/:id', cartController.cartUpdate);
 
-  //Vi bruger mongoose til at finde produkt ID'et (gennem parametren ':id"), og tjekker om vi har en fejl
-  Product.findById(productId, function (err, product) {
-    //Hvis vi har en fejl, redirecter til startsiden
-    if(err) {
-      return res.redirect('/');
-    }
-    //Hvis vi ikke har fejl tilføjer vi produktet til vores kurv. Vi bruger parametren produkt (som vi har hentet databasen, og vores produkt ID til at identificere det)
-    cart.add(product, product.id);
-    //Vi gemmer nu vores cart objekt i vores session
-    req.session.cart = cart;
-    console.log(req.session.cart);
-    //Vi redirecter til vores produkt side
-    res.redirect('/');
-  });
-});
-
+//Henter vores indkøbskurv, med vores forskille produkter og dets priser
 router.get('/shopping-cart', function (req,res,next) {
   if (!req.session.cart) {
     return res.render('shop/shopping-cart', {products: null});

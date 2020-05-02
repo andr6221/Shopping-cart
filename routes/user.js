@@ -3,11 +3,12 @@ var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
 
+var User = require('../models/user')
 var Order = require('../models/order');
 var Cart = require('../models/cart');
 
-var csrfProtection = csrf();
-router.use(csrfProtection);
+/*var csrfProtection = csrf();
+router.use(csrfProtection);*/
 
 
 router.get('/profile', isLoggedIn, function (req, res, next) {
@@ -34,14 +35,16 @@ router.get('/about', function (req, res, next) {
     res.render('user/about')
 });
 
-router.get('/admin', function (req, res, next) {
-    res.render('user/admin')
+router.get('/admin',   async (req, res) => {
+    try {
+        var users = await User.find();
+        res.json(users);
+        res.render('user/admin');
+    } catch (err) {
+        res.json({msg: 'Fejl: ' + err});
+    }
 });
 
-router.post('/user/admin', function (req,res,next) {
-    userList = db.users.find();
-    return userList;
-});
 
 router.use('/', notLoggedIn, function(req, res, next){
     next();
@@ -49,7 +52,7 @@ router.use('/', notLoggedIn, function(req, res, next){
 
 router.get('/signup', function (req, res, next) {
     var messages = req.flash('error');
-    res.render('user/signup', {csrfToken: req.csrfToken()})
+    res.render('user/signup');
 });
 
 
@@ -75,7 +78,7 @@ router.post('/signup', passport.authenticate('local.signup', {
 
 router.get('/signin', function (req,res,) {
     var messages = req.flash('error');
-    res.render('user/signin', {csrfToken: req.csrfToken()})
+    res.render('user/signin'/*, {csrfToken: req.csrfToken()}*/)
 });
 
 router.post('/signin', passport.authenticate('local.signin', {
@@ -110,4 +113,5 @@ function notLoggedIn(req,res, next) {
     }
     res.redirect('/');
 }
+
 

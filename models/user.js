@@ -11,7 +11,7 @@ var userSchema = new Schema ({
     password: {type: String, required: true}
 });
 
-// Vi bruger bcrypts Encrypt password til at kryptere passworded
+// Vi bruger bcrypts encryptPassword til at kryptere passworded
 userSchema.methods.encryptPassword = function(password) {
     //Funktionen hashSync tager data og salt som parametre. Data er vores den data vi vil kryptere og "salt" bliver brugt til at hashe passworded. Grunden til at man bruger salt er for at skabe en unik hash, hver gang
     return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
