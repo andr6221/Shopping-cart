@@ -36,3 +36,27 @@ exports.cartUpdate = function (req,res) {
         res.redirect('/');
     });
 };
+
+
+exports.getCart = function (req,res) {
+    if (!req.session.cart) {
+        return res.render('shop/shopping-cart', {products: null});
+    }
+    var cart = new Cart(req.session.cart);
+    res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
+};
+
+
+exports.cartCheckout = function(req, res, next) {
+    // Vi check om indkøbskurven "eksiterer", eller om brugeren bare har skrevet /checkout manuelt, ellers redirecter vi til shopping-cart siden
+    if (!req.session.cart) {
+        return res.redirect('/shopping-cart');
+    }
+    // Hvis vi har en indkøbskurv laver vi et nyt objekt "Cart"
+    var cart = new Cart(req.session.cart);
+    // Vi laver vores variabel errMsg til at håndtere fejlbeskeder, ved hjælp af flash. Vi vælger den første fejlbesked, da vi kun gemmer den første fejl.
+    var errMsg = req.flash('error')[0];
+    // Herefter render vi vores checkout view, hvor vi giver den et JS objekt med variabler, som vi skal bruge i dette view. I dette tilfælde giver vi den vores totalpris, som vi kan hente fra shopping-carten.
+    //Vi bruger også vores error besked, hvis der er en errorMsg vil den blive vist, og hvis der er ikke er en vil noError blive true
+    res.render('shop/checkout', {total: cart.totalPrice, errMsg: errMsg, noError: !errMsg});
+};
