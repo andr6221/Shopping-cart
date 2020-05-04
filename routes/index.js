@@ -38,10 +38,9 @@ router.get('/checkout', isLoggedIn, cartController.cartCheckout);
 
 //Vi laver en post route, med pathen /checkout (den route vi prøver at komme ind på når vi får valideret vores kreditinfo). Vi skal bruge denne rute til at lave en charge i Stripe.
 //Vi checker om personen er logged ind
-
 router.post('/checkout',  isLoggedIn, orderController.placeOrder);
 
-
+//Vi eksporterer vores routers
 module.exports = router;
 
 function isLoggedIn(req,res, next) {
@@ -51,7 +50,7 @@ function isLoggedIn(req,res, next) {
   }
   req.session.oldUrl = req.url;
   res.redirect('/user/signin');
-}
+};
 
 
 

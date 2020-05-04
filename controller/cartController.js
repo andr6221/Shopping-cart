@@ -37,8 +37,9 @@ exports.cartUpdate = function (req,res) {
     });
 };
 
-
+//Laver en controller til at hente vores cart
 exports.getCart = function (req,res) {
+    //Hvis der ikke er en cart render vi vores view med ingen products
     if (!req.session.cart) {
         return res.render('shop/shopping-cart', {products: null});
     }
@@ -47,6 +48,7 @@ exports.getCart = function (req,res) {
 };
 
 
+//Vi laver en controller / modul-funktion til vores checkOut page
 exports.cartCheckout = function(req, res, next) {
     // Vi check om indkøbskurven "eksiterer", eller om brugeren bare har skrevet /checkout manuelt, ellers redirecter vi til shopping-cart siden
     if (!req.session.cart) {

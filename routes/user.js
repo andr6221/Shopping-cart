@@ -1,20 +1,23 @@
+//Vi henter express, og passport
 var express = require('express');
 var router = express.Router();
-var csrf = require('csurf');
 var passport = require('passport');
 
-var User = require('../models/user')
+var User = require('../models/user');
 var Order = require('../models/order');
 var Cart = require('../models/cart');
 
+//Vi henter vores controller mappe
 var userController = require('../controller/userController');
 
-
+//Vi laver vores route på /profile der checker om personen er logged in og bruger generer vores Order list
 router.get('/profile', isLoggedIn, userController.userProfileOrderList);
 
+//Vi laver vores router på /logout, der logger personen ud. Vi bruger passport's indbyggede logout() til dette i vores controller
 router.get('/logout', isLoggedIn, userController.logOut);
 
-router.get('/about', function (req, res, next) {
+//Vi render vores about-side
+router.get('/about', function (req, res) {
     res.render('user/about')
 });
 
@@ -26,8 +29,8 @@ router.use('/', notLoggedIn, function(req, res, next){
     next();
 });
 
-//Render vores signup view
-router.get('/signup', function (req, res, next) {
+//Vi laver en get route, der håndterer vores /signup view.
+router.get('/signup', function (req, res) {
     var messages = req.flash('error');
     res.render('user/signup');
 });
@@ -43,28 +46,30 @@ router.post('/signup', passport.authenticate('local.signup', {
 
 router.get('/signin', function (req,res) {
     var messages = req.flash('error');
-    res.render('user/signin'/*, {csrfToken: req.csrfToken()}*/)
+    res.render('user/signin')
 });
 
+//
 router.post('/signin', passport.authenticate('local.signin', {
     failureRedirect: '/user/signup',
     failureFlash: true
 }), userController.oldUrlCheck);
 
+//Vi eksporterer routeren
 module.exports = router;
 
 //Vi laver en hjæple-funktion til at undersøge om brugeren er logged ind
 function isLoggedIn(req,res, next) {
-    // passport holder styr på autoriseringen
+    //Vi bruger passport isAuthenticated metode til at undersøge om brugeren er logged in.
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/');
 }
 
-//Vi opretter en hjælpe-funktion, der sørger for at se om brugeren IKKE er authenticated (vi bruger passport som middleware her)
+//Vi opretter en hjælpe-funktion, der undersøger hvorvidt brugeren IKKE er authenticated (vi bruger passport som middleware her)
 function notLoggedIn(req,res, next) {
-    // passport holder styr på autoriseringen
+    // Vi bruger passport metode isAuthenticated med omvendt logik
     if (!req.isAuthenticated()) {
         return next();
     }

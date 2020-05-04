@@ -11,7 +11,7 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 
-
+//Vi henter vores index-router med NodeJS require funktion
 var indexRouter = require('./routes/index');
 var userRoutes = require('./routes/user');
 
@@ -46,9 +46,13 @@ app.use(session({
   store: new MongoStore({mongooseConnection: mongoose.connection}),
   cookie: { maxAge: 180 * 160 * 1000}
 }));
+//Vi aktiverer flash pakken. Flash er et officielt express middleware der bliver brugt til at flashe beskeder.
 app.use(flash());
+//Vi sætter vores passport middleware op. Passport hjælper os med at holde styr på om brugeren er logged in, logge ud og se om brugeren er authenticated. Vi initialiserer passport her. Se http://www.passportjs.org/docs/configure/
 app.use(passport.initialize());
+//Vi aktiverer passport-session modul. Passport kan med session funktionen sørge at, hvis autoriseringen er godkendt, vil en session blive oprretet ved hjælp af cookie.
 app.use(passport.session());
+//Vi aktiverer vores express static middleware til at gøre vores public filer i public tilgængelige
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Middleware der bliver eksekveret ved alle requests, der tjekker om brugeren er autoriseret, der kan bruges i alle views. Gøres ved hjælp af .locals variablen. Herefter bruger vi next for at lade requesten fortsætte.
@@ -59,7 +63,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+//Vi binder vores express middleware til vores user-API
 app.use('/user', userRoutes);
+
+//Vi binder vores app til vores index API
 app.use('/', indexRouter);
 
 

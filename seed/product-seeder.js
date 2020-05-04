@@ -1,9 +1,13 @@
+//Vi henter vores produkt skema
 var Product = require('../models/product');
 
+//Vi henter mongoose
 var mongoose = require('mongoose');
 
+//Vi connecter til vores databasen
 mongoose.connect('mongodb://127.0.0.1:27017/shopping', { useNewUrlParser: true, useUnifiedTopology: true });
 
+//Vi seeder vores produkter i en variabel kaldet products
 var products = [
     new Product({
        imagePath: 'https://i.pinimg.com/474x/1b/73/80/1b738096a305befa82f3550519979ebe.jpg',
@@ -31,7 +35,7 @@ var products = [
     })
 ];
 
-
+//Vi gemmer vores products i en array
 var done = 0;
 for (var i=0; i < products.length; i++) {
     products[i].save(function (err, result) {
