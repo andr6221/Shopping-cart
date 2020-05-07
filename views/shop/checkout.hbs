@@ -2,7 +2,7 @@
     <div class="col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3">
         <h1>Betaling</h1>
         <!--  Vi bruger handlebars til at outputte vores total  -->
-        <h4>Din total: ${{total}}</h4>
+        <h4>Din total: {{total}} kr.</h4>
         <div id="charge-error" class="alert alert-danger {{#if noError }}hidden{{/if}}">
             {{errMsg}}
         </div>

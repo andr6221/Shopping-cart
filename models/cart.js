@@ -2,7 +2,8 @@
 //Vi laver en funktion, som vi skal bruge til lave indkøbskurv-objekter
 //Bemærk at vi laver en "ny" kurv hver gang du tilføjer et item. Derfor skal vi bruge den gamle kurv for at opdatere den med det nye item. Altså bliver kurven gendannet på ny for hvert item tilføjet.
 module.exports = function Cart(oldCart) {
-    //Vores kurv skal indholde vores items fra den gamle kurv. Dette har vi brug for da vi laver kurven på ny. Vi laver || (OR operator), der fortæller at vi ellers skal vidergive et tomt objekt. Dette gør kurven fleksibel i forhold til om den er helt ny (tom) eller gammel
+    //Vores kurv skal indholde vores items fra den gamle kurv. Dette har vi brug for da vi laver kurven på ny.
+    // Vi laver || (OR operator), der fortæller at vi ellers skal vidergive et tomt objekt. Dette gør kurven fleksibel i forhold til om den er helt ny (tom) eller gammel
   this.items = oldCart.items || {};
   // Kurven skal indeholde en total mængde fra tidligere. Vi bruger || operatoren af samme grund som beskrevet ovenfor.
   this.totalQty = oldCart.totalQty || 0;
@@ -41,3 +42,4 @@ module.exports = function Cart(oldCart) {
     return arr;
   };
 };
+

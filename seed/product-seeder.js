@@ -25,7 +25,7 @@ var products = [
         imagePath: 'https://feed-your-sole.com/wp-content/uploads/2019/12/Coconut-Basmati-Wild-Rice-800x687.png',
         title: 'Vilde ris',
         description: 'Wild rice watch out',
-        price: 10
+        price: 20
     }),
     new Product({
         imagePath: 'https://images.interactives.dk/istock-184842128-ilAFOUXlmHd8wAxofg1LLg.jpg?auto=compress&ch=Width%2CDPR&dpr=2.63&ixjsv=2.2.4&q=38&rect=104%2C0%2C5408%2C3744&w=430',
@@ -40,12 +40,14 @@ var done = 0;
 for (var i=0; i < products.length; i++) {
     products[i].save(function (err, result) {
         done++;
+        //Vi checker om vi har fået alle products med
         if (done === products.length) {
             exit();
         }
     });
 }
 
+//Vi laver vores disconnect funktion
 function exit() {
     mongoose.disconnect();
 }

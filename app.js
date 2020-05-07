@@ -10,6 +10,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
+var methodOverride = require('method-override')
 
 //Vi henter vores index-router med NodeJS require funktion
 var indexRouter = require('./routes/index');

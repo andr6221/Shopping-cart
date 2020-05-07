@@ -1,7 +1,14 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <h1>Brugerprofil</h1>
+        <h1>Brugerprofil </h1>
         <hr>
+        <b>
+            {{# each users }}
+                {{# each this.users}}
+                    {{this.user.email}}
+                {{/each}}
+            {{/each}}
+        </b>
         <h2>Mine bestillinger</h2>
         {{# each orders }}
             <div class="panel panel-default">

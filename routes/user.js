@@ -2,10 +2,13 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var mongoose = require('mongoose');
+
 
 var User = require('../models/user');
 var Order = require('../models/order');
 var Cart = require('../models/cart');
+
 
 //Vi henter vores controller mappe
 var userController = require('../controller/userController');
@@ -22,7 +25,13 @@ router.get('/about', function (req, res) {
 });
 
 //Printer vores userList på admin siden
-router.get('/admin', userController.userListPrint);
+router.get('/admin', function (req,res) {
+    User.find(function (err, docs) {
+        res.render('user/admin', {title: 'Brugere!', users: docs})
+    });
+});
+
+
 
 //Hvis man ikke er logged in bliver redirected til startsiden
 router.use('/', notLoggedIn, function(req, res, next){
@@ -36,12 +45,12 @@ router.get('/signup', function (req, res) {
 });
 
 
-//
+//Vi laver en post route, der sørger for at brugeren blive redirectet til signup view
 router.post('/signup', passport.authenticate('local.signup', {
     failureRedirect: '/user/signup',
     failureFlash: true
     //Vi laver en funktion der håndtere en succesfuld login forsøg
-}), userController.oldUrlCheck);
+}));
 
 
 router.get('/signin', function (req,res) {
@@ -53,7 +62,7 @@ router.get('/signin', function (req,res) {
 router.post('/signin', passport.authenticate('local.signin', {
     failureRedirect: '/user/signup',
     failureFlash: true
-}), userController.oldUrlCheck);
+}));
 
 //Vi eksporterer routeren
 module.exports = router;
@@ -76,6 +85,5 @@ function notLoggedIn(req,res, next) {
     //Vi redirecter herefter til startsiden
     res.redirect('/');
 }
-
 
 

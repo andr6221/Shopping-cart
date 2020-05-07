@@ -1,6 +1,6 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Home</a>
+    <a class="navbar-brand" href="/">Hjem</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,21 +9,21 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
                 <a class="nav-link" href="/shopping-cart/">
-                    <i class="fa fa-shopping-cart" aria-hidden="true" badge-primary></i> Shopping Cart
+                    <i class="fa fa-shopping-cart" aria-hidden="true" badge-primary></i> Kurv
                     <span class="badge" colour > {{ session.cart.totalQty }}  </span>
                 </a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user" aria-hidden="true"></i> User Management
+                    <i class="fa fa-user" aria-hidden="true"></i> Profil
                 </a>
                 <div class="dropdown-menu" aria-labelledby=>
                     {{# if login }}
                         <a class="dropdown-item" href="/user/profile"><i class="fas fa-users"></i> User Account</a>
-                        <a class="dropdown-item" href="/user/logout">Logout</a>
+                        <a class="dropdown-item" href="/user/logout">Log ud</a>
                     {{ else }}
-                        <a class="dropdown-item" href="/user/signup"><i class="fas fa-users"></i> Signup</a>
-                        <a class="dropdown-item" href="/user/signin"><i class="fas fa-users"></i> Signin</a>
+                        <a class="dropdown-item" href="/user/signup"><i class="fas fa-users"></i> Opret bruger</a>
+                        <a class="dropdown-item" href="/user/signin"><i class="fas fa-users"></i> Log ind</a>
                     {{/if }}
                 </div>
             </li>

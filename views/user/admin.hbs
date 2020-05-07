@@ -1,10 +1,26 @@
+<div id="userid" style="...">
+{{# each users}}
+    BRUGERE!
+    VORES EMAIL: {{ this.email }}
+    KODEORD: {{ this.password }}
+    ID: {{ this._id }}
+{{/each}}
+</div>
+
+
+<form action="/user/admin" method="POST" action="/resource?_method=DELETE">
+    <button type="submit" class="btn btn-primary">Slet bruger</button>
+</form>
+
+
+
 <h1>Admin-siden</h1>
+
 <div>
     Admin interface <br>
 
     Farligt sted at være <br>
     <img src="https://carboncostume.com/wordpress/wp-content/uploads/2015/11/hackerman.jpg" height="500" width="500">
     <ul>
-        {{ userList }}
     </ul>
 </div>
